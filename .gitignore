@@ -1,4 +1,10 @@
 jpeg
-seed.dat
-ori.txt
-res.txt
+*.bmp
+*.jpg
+*.dat
+*.txt
+*.o
+!scale_factor.txt
+!pepper.bmp
+!Lena.bmp
+!baboon.bmp
