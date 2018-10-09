@@ -10,11 +10,11 @@ int main(int argc, char *argv[]) {
 			throw "Usage: exe_file  bmp jpg";// 用法: 可执行文件  图像
 		}
 		{
-
 			string sha = sha512file(argv[1]);
 			std::stringstream stream;
 			ofstream file("seed.dat", ios::binary);
-			for (int i = 0; i < 5; ++i) {
+			cout.precision(15);
+			for (int i = 0; i < 4; ++i) {
 				string temp(sha.substr(16 * i, 16));
 				double seed;
 				unsigned long long toULL;
@@ -25,6 +25,20 @@ int main(int argc, char *argv[]) {
 				cout << seed << endl;
 				file.write((const char*)&seed, sizeof(double));
 			}
+			unsigned long long logisticSeed = 0;
+			double seed;
+			for (int i = 5; i < 9; ++i) {
+				string temp(sha.substr(16 * i, 16));
+				unsigned long long toULL;
+				stream.clear();
+				stream << hex << temp;
+				stream >> hex >> toULL;
+				logisticSeed ^= toULL;
+			}
+			seed = (double)logisticSeed / (double)0xffffffffffffffffull;
+			cout << seed << endl;
+			file.write((const char*)&seed, sizeof(double));
+			file.close();
 		}
 		{
 			string jpgNewName;
