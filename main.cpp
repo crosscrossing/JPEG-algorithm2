@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 		}
 		{
 			ofstream file("seed.dat", ios::binary);
-			double a1 = 0.1, a2 = 0.15, a3 = 0.2, a4 = 0.25000000000001, a5 = 0.3;
+			double a1 = 1.5121615730212, a2 = 12.102462138545, a3 = 9.4525140151405, a4 = 0.49161415934378, a5 = 0.63726194247947;
 			file.write((const char*)&a1, sizeof(double));
 			file.write((const char*)&a2, sizeof(double));
 			file.write((const char*)&a3, sizeof(double));
