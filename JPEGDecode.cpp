@@ -507,6 +507,24 @@ int JPEGDecodeDecrypt::decodeDataStream() {
 				readAC(cAcDehuff, crDiff, crDeQT[i]);
 			}
 
+			ofstream file("data.txt");
+			file << "x max: " << x_pos_max << '\t' << "y max: " << y_pos_max << endl;
+			int *count = new int[numMCU];
+			memset(count, 0, sizeof(int)*numMCU);
+			for (int i = 0; i < numMCU; i++) {
+				for (int j = 0; j < 64; j++) {
+					(!yDeQT[i][j]) ? count[i]++ : false;
+				}
+				if (count[i] > 45) {
+					file << 0 << '\t';
+				}
+				else {
+					file << 1 << '\t';
+				}
+			}
+			file.close();
+			delete[] count;
+
 #ifdef ENCRYPT
 			{
 				decryptComputeDiff(yDeQT, numMCU);
@@ -550,21 +568,7 @@ int JPEGDecodeDecrypt::decodeDataStream() {
 				decryptReComputeDiff(crDeQT, numMCU);
 			}
 #endif
-			/*
-			ofstream file("data.txt");
-			file << "x max: " << x_pos_max << '\t' << "y max: " << y_pos_max + 1 << endl;
-			int *count=new int[numMCU];
-			memset(count, 0, sizeof(int)*numMCU);
-			for (int i = 0; i < numMCU; i++) {
-			for (int j = 0; j < 64; j++) {
-			(!yDeQT[i][j])?count[i]++:false;
-			}
-			file << count[i] << '\t';
-			}
-			file.close();
-			delete[] count;
-			*/
-
+			
 			int threadsNum = thread::hardware_concurrency() - 1;
 			vector<thread> th;
 			std::atomic<int> curMCU(0);
