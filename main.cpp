@@ -3,6 +3,71 @@
 #include"JPEGEncode.h"
 #include"sha512.h"
 #include<sstream>
+void testDC() {
+	using namespace std;
+	vector<int> ori;
+	vector<int> res;
+	fstream test("ori.txt");
+	while (test.good()) {
+		int temp;
+		test >> temp;
+		ori.push_back(temp);
+	}
+	test.close();
+	test.open("res.txt");
+	while (test.good()) {
+		int temp;
+		test >> temp;
+		res.push_back(temp);
+	}
+	test.close();
+
+	int count = 0;
+	int error = 0;
+	vector<int>::iterator ori_it = ori.begin();
+	vector<int>::iterator res_it = res.begin();
+	for (; ori_it != ori.end(); ++ori_it, ++res_it) {
+		if (*ori_it != *res_it) {
+			error++;
+		}
+		count++;
+	}
+	cout << "DC变化率测试： " << (double)error / count << endl;
+	return;
+}
+void testAC() {
+	using namespace std;
+	vector<int> ori;
+	vector<int> res;
+	fstream test("oriAC.txt");
+	while (test.good()) {
+		int temp;
+		test >> temp;
+		ori.push_back(temp);
+	}
+	test.close();
+	test.open("resAC.txt");
+	while (test.good()) {
+		int temp;
+		test >> temp;
+		res.push_back(temp);
+	}
+	test.close();
+
+	int count = 0;
+	int error = 0;
+	vector<int>::iterator ori_it = ori.begin();
+	vector<int>::iterator res_it = res.begin();
+	for (; ori_it != ori.end(); ++ori_it, ++res_it) {
+		if (*ori_it != *res_it) {
+			error++;
+		}
+		count++;
+	}
+	cout << "AC变化率测试： " << (double)error / count << endl;
+	return;
+}
+
 int main(int argc, char *argv[]) {
 	using namespace std;
 	try {
@@ -74,5 +139,9 @@ int main(int argc, char *argv[]) {
 		system("pause");
 		return 1;
 	}
+
+	testDC();
+	testAC();
+
 	return 0;
 }

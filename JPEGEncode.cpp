@@ -888,12 +888,19 @@ void JPEGEncodeEncrypt::encrypt(SWORD(*yMcu)[64], SWORD(*cbMcu)[64], SWORD(*crMc
 
 	//取出DC系数
 	ofstream ori("ori.txt");
+	ofstream oriAC("oriAC.txt");
 	SWORD *mcuPointer = mcu[0];
 	for (int i = 0; i < 3 * numMCU; i++) {
 		ori << *mcuPointer << '\t';
+		for (int i = 1; i < 64; i++) {
+			if (*(mcuPointer + i) != 0) {
+				oriAC << *(mcuPointer + i) << "00" << i << '\t';
+			}
+		}
 		mcuPointer += 64;
 	}
 	ori.close();
+	oriAC.close();
 
 	for (int round = 0; round < ROUND; round++) {
 		//dc encrypt
@@ -923,12 +930,19 @@ void JPEGEncodeEncrypt::encrypt(SWORD(*yMcu)[64], SWORD(*cbMcu)[64], SWORD(*crMc
 
 	//取出DC系数
 	ofstream res("res.txt");
+	ofstream resAC("resAC.txt");
 	mcuPointer = mcu[0];
 	for (int i = 0; i < 3 * numMCU; i++) {
 		res << *mcuPointer << '\t';
+		for (int i = 1; i < 64; i++) {
+			if (*(mcuPointer + i) != 0) {
+				resAC << *(mcuPointer + i) << "00" << i << '\t';
+			}
+		}
 		mcuPointer += 64;
 	}
 	res.close();
+	resAC.close();
 
 	delete[] mcu;
 }
